@@ -63,7 +63,7 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+            "query": "={{ $fromAI('query', ``, 'string') }}"
           },
           "matchingColumns": [
             "query"
@@ -99,12 +99,12 @@
           "__rl": true,
           "value": "x9v14SwF775vesaZ",
           "mode": "list",
-          "cachedResultName": "My project — AGNT-22 Visualization Agent copy"
+          "cachedResultName": "My project — AGNT-22 Visualization Agent"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+            "query": "={{ $fromAI('query', ``, 'string') }}"
           },
           "matchingColumns": [
             "query"
@@ -244,7 +244,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "af36bfb9-426f-4945-8d87-3cab589e44fe",
+  "versionId": "1c4d6f54-cabe-40e9-8d8c-bf14ef0ee10e",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "91f378fe60da678632cbae3dbc7580425fa46ba54eec358af5e91b61588d6d8f"
