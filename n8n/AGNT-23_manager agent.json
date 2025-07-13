@@ -9,10 +9,10 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        0,
-        0
+        -100,
+        -120
       ],
-      "id": "896ee1b2-8316-4375-8cd9-fce311b7acd9",
+      "id": "0113259c-79b2-4248-8703-e7b7063195b2",
       "name": "When chat message received",
       "webhookId": "e1af5a6a-a26f-4fe1-99a0-4ac196d4c42c"
     },
@@ -29,10 +29,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
       "typeVersion": 1.3,
       "position": [
-        60,
-        200
+        -40,
+        80
       ],
-      "id": "0f915ca9-471d-4221-af5c-bf9ee1c8ae09",
+      "id": "0d08e200-7c28-4b73-b8c6-4980ea167f46",
       "name": "Anthropic Chat Model",
       "credentials": {
         "anthropicApi": {
@@ -46,10 +46,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        300,
-        280
+        200,
+        160
       ],
-      "id": "c9d9ba6b-7dd8-44f9-b453-c1f8b0817911",
+      "id": "b9cc2543-7c01-4cf5-8b2c-65f2dc54cbd4",
       "name": "Simple Memory"
     },
     {
@@ -87,10 +87,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        460,
-        340
+        360,
+        220
       ],
-      "id": "ea644b5f-43e7-4056-bb60-e9419e1bf59d",
+      "id": "c7cff515-8c20-4c88-9d32-b1bc4de7d9bc",
       "name": "Research Agent"
     },
     {
@@ -128,15 +128,14 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        580,
-        200
+        480,
+        80
       ],
-      "id": "bed29bad-7a8b-48f0-8684-5d9bb9d3b63e",
+      "id": "3579587d-5152-41fe-9024-b7d5c981b57a",
       "name": "Visualization Agent"
     },
     {
       "parameters": {
-        "needsFallback": true,
         "options": {
           "systemMessage": "=## ROLE & RESPONSIBILITY\n\nYou are a Manager Agent responsible for coordinating between a Research Agent and a Visualization Agent. Your primary function is to:\n- Analyze incoming user requests to determine task requirements\n- Route tasks to the appropriate specialist agent(s)\n- Coordinate multi-agent workflows when both research and visualization are needed\n- Consolidate and present final outputs to users\n- Make no direct tool calls or API requests – you delegate all execution work\n\n## AVAILABLE TOOLS\n\n- Research Agent: Deploy for data gathering, analysis, fact-checking, market research, competitive analysis, literature reviews, and information synthesis\n- Visualization Agent: Deploy for creating charts, graphs, dashboards, infographics, data presentations, and visual content\n- No direct tools or APIs available to you\n\n## WORKFLOW PROCESS\n\n1.  **Input Analysis:** Parse user request to identify:\n    - Information gathering needs (triggers Research Agent)\n    - Visual output requirements (triggers Visualization Agent)\n    - Dependencies between research and visualization tasks\n\n2.  **Agent Routing:**\n    - Single agent: Route directly to Research OR Visualization Agent\n    - Sequential: Research first, then Visualization using research output\n    - Parallel: Independent research and visualization tasks\n\n3.  **Coordination:**\n    - Monitor agent progress and outputs\n    - Ensure research data is properly formatted for visualization needs\n    - Handle handoffs between agents\n\n4.  **Output Integration:** Compile agent outputs into cohesive final response\n\n## IMPORTANT GUARDRAILS\n\n- Never attempt direct research or visualization – always delegate\n- Do not make assumptions about data availability – confirm with Research Agent first\n- Escalate to human if agents cannot fulfill requirements or produce contradictory outputs\n- Reject requests for harmful, misleading, or inappropriate content creation\n\n## OUTPUT SPECIFICATIONS\n\n- Format: Present integrated response combining both agents' work\n- Structure: Lead with key findings, follow with supporting visuals\n- Attribution: Clearly indicate which content came from which agent\n- Completeness: Ensure user's original request is fully addressed\n\n**Example Routing Logic:**\n- \"Research competitor pricing\" -> Research Agent only\n- \"Create sales dashboard\" -> Visualization Agent only\n- \"Analyze market trends and create report with charts\" -> Research Agent -> Visualization Agent (sequential)"
         }
@@ -144,56 +143,46 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        220,
-        0
+        120,
+        -120
       ],
-      "id": "c1a284c2-0cb5-40a0-b46f-a8f1cefa86cf",
+      "id": "d7ef72e8-7cde-4d1e-bcbe-5aa50cd18dcf",
       "name": "Manager Agent"
     },
     {
       "parameters": {
         "content": "## 🎯 Manager Agent - Sistema de Coordinación de Agentes IA\n\n**Propósito:** Este workflow funciona como un coordinador inteligente que distribuye tareas entre agentes especializados.\n\n**Cómo funciona:**\n- Recibe consultas vía chat\n- Analiza si necesita investigación, visualización o ambas\n- Delega tareas a los agentes apropiados\n- Consolida resultados finales\n\n**Ejemplo de uso:** \"Comparativa entre Banco Bisa y Banco Nacional\" activará primero el Research Agent para recopilar datos, luego el Visualization Agent para crear gráficos comparativos.",
-        "height": 200,
+        "height": 420,
         "width": 400,
         "color": 4
       },
-      "id": "note-main-explanation",
+      "id": "835fb7c8-5e89-4b0d-b92f-41521ed5a12f",
       "name": "Nota Principal",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -200,
-        50
+        -600,
+        -240
       ]
     },
     {
       "parameters": {
         "content": "## ⚙️ CONFIGURACIÓN REQUERIDA\n\n**IMPORTANTE:** Para que este workflow funcione correctamente, asegúrate de:\n\n1. **Credenciales Anthropic:** Configurar API key válida\n2. **Workflows de Agentes:** Los workflows \"Research Agent\" y \"Visualization Agent\" deben existir y estar activos\n3. **IDs de Workflows:** Verificar que los IDs de workflows sean correctos en los nodos de herramientas",
-        "height": 150,
-        "width": 350,
+        "height": 310,
+        "width": 450,
         "color": 2
       },
-      "id": "note-configuration",
+      "id": "5436002c-4e6c-4145-af67-106ed767f94c",
       "name": "Nota Configuración",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        400,
-        50
+        640,
+        -180
       ]
     }
   ],
-  "pinData": {
-    "When chat message received": [
-      {
-        "json": {
-          "action": "sendMessage",
-          "sessionId": "ab963d94-eecb-443c-bc5e-f65fbf7b6215",
-          "chatInput": "Hola una comparativa entre banco bisa y banco nacional"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "connections": {
     "When chat message received": {
       "main": [
@@ -251,11 +240,11 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "31c8dc33-a06a-40b7-9b61-53eb822794dc",
+  "versionId": "af36bfb9-426f-4945-8d87-3cab589e44fe",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "91f378fe60da678632cbae3dbc7580425fa46ba54eec358af5e91b61588d6d8f"
