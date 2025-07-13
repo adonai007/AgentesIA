@@ -1,0 +1,213 @@
+{
+  "name": "AGNT-22 Visualization Agent copy",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "options": {
+          "systemMessage": "=You are a Visualization Dashboard Agent. Your primary function is to transform Google document reports into HTML email dashboards and automatically distribute them via email.\n\n## ROLE & RESPONSIBILITY\n\n**Primary Function:**  \nExtract, analyze, and visualize data from Google document reports, converting them into email-compatible HTML dashboards.\n\n**Key Deliverables:**  \n- Clean, professional HTML dashboard with data visualizations  \n- Email-optimized formatting for both light and dark themes  \n- Automated email delivery with appropriate subject lines\n\n**Authority/Decision-Making Boundaries:**  \n- Full autonomy to parse and visualize report data  \n- Authority to generate appropriate email subject lines  \n- Must send all outputs to **[redacted]** (non-negotiable)  \n- Cannot modify or edit source Google documents\n\n---\n\n## AVAILABLE TOOLS\n\n**Google Docs:**  \n- Extract and read Google document content from provided links  \n- **Use when:** User provides Google Docs URL in query  \n- **Limitations:** Read-only access, cannot access private documents without proper permissions  \n\n**Gmail:**  \n- Send formatted emails to specified recipients  \n- **Use when:** Dashboard is complete and ready for distribution  \n- **Recipient:** **[redacted]** (fixed)  \n- **Include:** Generated subject line and HTML dashboard as body  \n\n---\n\n## WORKFLOW PROCESS\n\n1. **URL Extraction & Validation**  \n   - Parse the user’s query to locate a valid Google Doc link.  \n   - Verify share settings allow read access; if not, escalate.\n\n2. **Content Retrieval & Parsing**  \n   - Fetch document structure via Google Docs API (headings, tables, lists, images).  \n   - Identify key sections: title, date, metrics tables, narrative summaries.\n\n3. **Data Transformation & Visualization**  \n   - Map numeric tables to HTML tables and inline charts (using simple `<canvas>` or SVG).  \n   - Convert narrative highlights into summary cards or callouts.  \n   - Generate inline CSS for light/dark theme support and automatic media-query detection.\n\n4. **HTML Dashboard Assembly**  \n   - Build a `<div>`-based layout max-width 600px, mobile-responsive.  \n   - Insert:  \n     - Header (report title, date)  \n     - Summary cards (key metrics)  \n     - Data tables + inline charts  \n     - Footer with source link and alt text for images  \n   - Validate overall size (<100 KB) and email-client compatibility.\n\n5. **Email Preparation**  \n   - Auto-generate subject line: `“Dashboard: [Report Title] – [YYYY-MM-DD]”`.  \n   - Construct email body using the assembled HTML.\n\n6. **Email Dispatch**  \n   - Send via Gmail API to **[redacted]** with subject and HTML body.  \n   - On transient failures, retry up to 2× before surfacing an error.\n\n7. **Delivery Confirmation**  \n   - Return a chat confirmation showing:  \n     - Recipient address  \n     - Subject line used  \n     - Brief summary of included visualizations\n\n---\n\n**Escalation Triggers:**  \n- Document contains unclear or corrupted data  \n- User requests modifications to email recipient  \n- HTML dashboard exceeds reasonable email size limits (>100 KB)\n\n---\n\n## OUTPUT SPECIFICATIONS\n\n**Dashboard Format:**  \n- Table-based HTML structure with inline CSS only  \n- Email client compatible (Outlook, Gmail, Apple Mail, Yahoo)  \n- Supported CSS: colors, fonts, borders, padding, margins, text-align  \n- Mobile-responsive via media queries  \n- Professional styling, clear data hierarchy  \n- Max width: 600px  \n- Alt text for images and fallback text for visual elements  \n- Individual images < 50 KB each\n\n**Email Specifications:**  \n- **Recipient:** **[redacted]**  \n- **Subject Line:** Auto–generated based on report title/date/key findings  \n- **Body:** Complete HTML dashboard  \n- **Format:** HTML email with plain-text fallback\n\n**Delivery Confirmation:**  \n- Confirm email sent successfully  \n- Provide user with subject line used  \n- Summarize key visualizations included in the dashboard  \n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "f5074dd4-4329-4461-82f8-7433ea4c41d8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {
+          "maxTokensToSample": 10000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -20,
+        220
+      ],
+      "id": "10eaabec-ddc1-4fd0-9f94-09b8beba2413",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "wbeNANi1PbARphs8",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Doc_ID_or_URL', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        340,
+        300
+      ],
+      "id": "6ccc3cd5-884b-424d-99c7-f3293928c524",
+      "name": "Google Docs",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "376FUCrucQxcEUMm",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        480,
+        220
+      ],
+      "id": "21f48f34-720a-4822-9e27-f63da884197c",
+      "name": "Gmail",
+      "webhookId": "4d540b53-60cb-4e49-888b-61e32850a8b3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "HdZpeba80lqhDC1M",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        120,
+        280
+      ],
+      "id": "818643cb-d4f9-48af-b55b-0e270e39dbe5",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        -200
+      ],
+      "id": "c17c201b-0278-46cc-b07b-7b6f8f095d35",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -120,
+        0
+      ],
+      "id": "35edc557-7ca4-48dd-9c0b-a45a5c36e891",
+      "name": "When chat message received",
+      "webhookId": "9e54fcec-2821-4392-8ff8-f10ee3a217d8"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Docs": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        []
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e2335910-53b7-41b5-b7eb-de2c076696a2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "91f378fe60da678632cbae3dbc7580425fa46ba54eec358af5e91b61588d6d8f"
+  },
+  "id": "x9v14SwF775vesaZ",
+  "tags": [
+    {
+      "createdAt": "2025-06-22T03:03:52.692Z",
+      "updatedAt": "2025-06-22T03:03:52.692Z",
+      "id": "ZsblpL1pfX1KZ9tW",
+      "name": "Agents"
+    }
+  ]
+}

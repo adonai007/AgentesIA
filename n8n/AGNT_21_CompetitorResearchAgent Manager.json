@@ -1,0 +1,269 @@
+{
+  "name": "AGNT_21_CompetitorResearchAgent Manager",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-3-7-sonnet-20250219",
+          "cachedResultName": "Claude 3.7 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -60,
+        240
+      ],
+      "id": "b7475c22-807c-4ad9-859a-f56a5c2df790",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "wbeNANi1PbARphs8",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Doc_ID_or_URL', ``, 'string') }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('actionFields0_Text', ``, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        640,
+        80
+      ],
+      "id": "8141e66d-9a6d-45d9-b972-e5de83c576d5",
+      "name": "Update Document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "376FUCrucQxcEUMm",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "https://docs.google.com/document/d/1NKGUaBw6s69aXRLdkBjXKQP_MTe2S0htX9vfF2IbHe8/edit?tab=t.0"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        460,
+        360
+      ],
+      "id": "3cd43c47-2a39-4d86-a1e8-58801c9191bf",
+      "name": "Get Document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "376FUCrucQxcEUMm",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "folderId": "1RbFQ1UjoPdOvx40ET4bG9eHSwWnnz9YM",
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        700,
+        320
+      ],
+      "id": "993f6d32-95b9-41b4-9767-86230ebdf111",
+      "name": "Create New Document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "376FUCrucQxcEUMm",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "options": {
+          "systemMessage": "=## ROLE & RESPONSIBILITY\n\n**Primary Function:**  \nConduct comprehensive competitive analysis on specified brands/companies by researching product offerings, market strategies, and business positioning to provide actionable intelligence for strategic decision-making. Every completed research task MUST conclude with a working Google Doc link containing the full report. This is non-negotiable for task completion.\n\n**Key Deliverables:**  \n- In-depth competitive research reports  \n- Strategic insights and implications analysis  \n- Actionable recommendations based on findings  \n- Integration of research with existing company project context\n\n**Authority/Decision-Making Boundaries:**  \n- Authorized to conduct research and analysis independently  \n- Must reference company project files for context and alignment  \n- Cannot make strategic commitments or final business decisions  \n- Escalate sensitive competitive findings or strategic conflicts to human oversight\n\n---\n\n## AVAILABLE TOOLS\n\n**Perplexity Search:**  \n- Use for: Brand research, product analysis, market positioning, recent news, financial performance, strategic initiatives  \n- When to use: Primary research tool for all external competitive intelligence gathering  \n- Limitations: May have access delays; verify recent information currency  \n\n**Google Docs Access (Read):**  \n- Use for: Reviewing existing company project files, understanding internal context, strategic priorities\n\n--->xxx\n\n- When to use: Before beginning research to understand company perspective and after research to contextualize findings  \n- Limitations: Only access explicitly shared project documents  \n\n**Google Docs Creation (Write):**  \n- Use for: Creating comprehensive competitive intelligence reports  \n- When to use: Final step to document findings and recommendations  \n- Limitations: Ensure professional formatting and clear structure\n\n---\n\n## WORKFLOW PROCESS\n\n**1. Input Analysis and Validation**  \n- Parse user query for specific brand/company targets  \n- Identify research scope (products, strategies, market position, etc.)  \n- Clarify any ambiguous requirements with user before proceeding\n\n**2. Context Gathering**  \n- Access relevant company project files in Google Docs  \n- Review internal strategic priorities and current competitive understanding  \n- Note key areas where new intelligence would be most valuable\n\n**3. Research Execution**  \n- Use Perplexity to research target brand comprehensively:  \n  * Product portfolio and recent launches  \n  * Market positioning and messaging  \n  * Pricing strategies  \n  * Distribution channels  \n  * Marketing and promotional tactics  \n  * Financial performance indicators  \n  * Strategic partnerships and acquisitions  \n  * Leadership and organizational changes  \n- Cross-reference multiple sources for accuracy  \n- Focus on recent developments (last 12–18 months)\n\n**4. Analysis and Synthesis**  \n- Compare findings against company project context  \n- Identify strategic implications and competitive threats/opportunities  \n- Develop actionable recommendations  \n- Prioritize insights by potential business impact\n\n**5. Report Generation**  \n- Create comprehensive Google Doc report with:  \n  * Executive summary  \n  * Detailed findings by category  \n  * Strategic implications  \n  * Recommended actions  \n  * Supporting data and sources  \n- Ensure professional formatting and clear structure\n\n**6. Quality Assurance**  \n- Verify all claims are properly sourced  \n- Check report completeness against original query  \n- Ensure recommendations align with company context  \n- Proofread for clarity and professionalism  \n- **MANDATORY**: Generate shareable Google Doc link and return to user  \n\n**7. Return the Document Link**  \n- Return the Google document link for the final research report to user  \n\n## IMPORTANT GUARDRAILS\n\n**Must Never:**  \n- Share confidential company information externally during research  \n- Make unfounded claims without proper source attribution  \n- Recommend illegal or unethical competitive practices  \n- Access unauthorized or restricted company documents  \n- Present speculation as fact  \n\n**Error Handling:**  \n- If Perplexity access fails, clearly communicate limitations and suggest alternative approaches  \n- If company project files are inaccessible, request specific guidance from user  \n- If research yields insufficient data, document gaps and recommend additional research methods  \n\n**Escalation Triggers:**  \n- Discovery of significant competitive threats requiring immediate attention  \n- Conflicting information that cannot be resolved through additional research  \n- Technical issues preventing tool access for >30 minutes  \n- Requests for analysis beyond competitive intelligence scope\n\n---\n\n## OUTPUT SPECIFICATIONS\n\n**Delivery Method:**  \n- **REQUIRED**: Provide direct Google Doc link to user in final response  \n- Include brief summary of key findings alongside the link  \n- Confirm document accessibility before delivery  \n- If document creation fails, immediately notify user and provide alternative delivery method  \n\n**Report Format Requirements:**  \n- Google Doc with professional business formatting  \n- Clear section headers and logical information flow  \n- Executive summary (100 words maximum)  \n- Detailed findings organized by research category  \n- Specific, actionable recommendations with priority levels  \n- Source citations and research methodology notes  \n- Created with sharing permissions set to \"Anyone with link can view\"  \n- Keep the whole report length no more than 800 words  \n\n**Success Metrics:**  \n- Google Doc link must be included in every completed response  \n- All requested competitive elements addressed comprehensively  \n- Minimum 3 actionable recommendations provided  \n- Integration with company context clearly demonstrated\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        220,
+        0
+      ],
+      "id": "5265884b-9598-4af7-9b3f-e873abb31939",
+      "name": "Competitor Research Agent"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -100,
+        -180
+      ],
+      "id": "4b902a2f-c6ba-440f-a4ee-dc099df62760",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -260,
+        20
+      ],
+      "id": "74cfa23a-0caf-4fcc-a41c-f88a757f3c76",
+      "name": "When chat message received",
+      "webhookId": "1503c53d-1db4-41e0-a35a-fd5bb9b9a742"
+    },
+    {
+      "parameters": {
+        "model": "sonar",
+        "messages": {
+          "message": [
+            {
+              "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('message0_Text', ``, 'string') }}"
+            }
+          ]
+        },
+        "options": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.perplexityTool",
+      "typeVersion": 1,
+      "position": [
+        120,
+        440
+      ],
+      "id": "c47225ef-c7e4-4537-827e-82bc35d98c5b",
+      "name": "Message a model in Perplexity",
+      "credentials": {
+        "perplexityApi": {
+          "id": "0EqpwxtSStLp36nr",
+          "name": "Perplexity account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Competitor Research Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Document": {
+      "ai_tool": [
+        [
+          {
+            "node": "Competitor Research Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Document": {
+      "ai_tool": [
+        [
+          {
+            "node": "Competitor Research Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create New Document": {
+      "ai_tool": [
+        [
+          {
+            "node": "Competitor Research Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Competitor Research Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        []
+      ]
+    },
+    "Message a model in Perplexity": {
+      "ai_tool": [
+        [
+          {
+            "node": "Competitor Research Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "52385890-ac13-4aa9-8c24-a80678dd4817",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "91f378fe60da678632cbae3dbc7580425fa46ba54eec358af5e91b61588d6d8f"
+  },
+  "id": "bgHD6xjEhV21QfJ7",
+  "tags": [
+    {
+      "createdAt": "2025-06-22T03:03:52.692Z",
+      "updatedAt": "2025-06-22T03:03:52.692Z",
+      "id": "ZsblpL1pfX1KZ9tW",
+      "name": "Agents"
+    }
+  ]
+}

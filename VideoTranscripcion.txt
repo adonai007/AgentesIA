@@ -1,0 +1,468 @@
+Transcript for [Cualquiera puede crear su equipo de agentes de IA en menos de 30 minutos (sin necesidad de codifi...](https://www.youtube.com/watch?v=ok8FA0ROnMg) by [Merlin AI](https://merlin.foyer.work/)
+
+0:00 - Whenever I see a complex AI agent or
+workflow like this, I get a headache.
+0:04 - Yes, they look super impressive on the
+screen, but in reality, the more complex
+0:09 - your workflow is often less effective.
+0:11 - They're harder to maintain, debug
+or test or just make it harder to
+0:15 - scale and even more, it makes you
+think that AI agents have to be
+0:19 - very technical, look complicated in
+order to be considered high value.
+0:24 - So in this video, let's
+change this mindset.
+0:27 - I'll share a much simple and easy
+way to build not just a single
+0:31 - AI agent, but eventually building
+your AI work team with scalability.
+0:36 - Even if you are non-technical
+like me, let's go.
+0:41 - Don't let AI agents scare you.
+0:42 - What makes AI agents different is
+they make decision with reasoning.
+0:46 - It has access to tools, memory,
+so it can analyze a situations
+0:51 - and choose what to do next.
+0:52 - While a workflow or automation just
+execute the same sequence every time.
+0:57 - I cover this in details in my
+previous video, so go watch it.
+1:01 - And what makes an AI agent truly effective
+is not about how many nodes it has, but
+1:06 - with these clearly defined elements.
+1:08 - First role and responsibility,
+what exactly this agent does.
+1:12 - Second tools, what tools or external data
+it can access and use, and then input
+1:18 - what is the required input from the user.
+1:20 - Workflow details.
+1:21 - This is super important as it will make
+the agent's behavior much more reliable.
+1:26 - Important guardrails.
+1:28 - What are the boundaries
+and must-follow rules?
+1:30 - Output format, what is the output
+look like or success criteria?
+1:34 - You can even include things like
+error handling, how it will handle
+1:37 - different unexpected situations.
+1:39 - So the more details you define, the
+better will be the agent quality.
+1:43 - Another important note is that you'll
+need an API key from those AI models
+1:47 - or service provider in order to
+connect your agents to these systems.
+1:51 - So take some time to set up all those
+API keys before you start building.
+1:55 - For example, like perplexity,
+you need to create a separate new
+1:58 - API key for your agent's access.
+2:01 - So here is my simple three step framework
+to build your AI work team using what
+2:05 - I call a building block approach.
+2:07 - First, map your workflow.
+2:09 - Identify two to three repetitive or
+key tasks in your daily work process.
+2:13 - Is it research, copywriting,
+data analysis, or anything else.
+2:17 - The key is to keep them distinct enough.
+2:20 - Next design your AI agents
+or specialized AI assistant.
+2:24 - We'll be using an AI agent
+designer to design whatever AI agents we
+2:28 - want, which I'll show you in a minute.
+2:30 - And finally we'll add a manager agent.
+2:32 - So this is like your ultimate work
+assistant that helps you to delegate
+2:35 - and coordinate different tasks
+between different AI assistant.
+2:39 - So each AI assistant is like a
+block or specialized module where
+2:43 - you can plug to this manager at
+any time to ensure scalability.
+2:47 - For this video, I'll be using
+the no-code platform n8n.
+2:50 - It's good for non-technicals, but
+the same concept applies to other
+2:54 - no-code AI agents building platforms.
+2:56 - Now if you are also thinking about
+building AI agents for your organization,
+3:00 - I want to share this free ebook,
+Master AI Agents from HubSpot.
+3:04 - I've put the download
+link in the description.
+3:06 - This eBook focus on the
+strategic side of AI agents.
+3:09 - It's designed for anyone looking to deploy
+AI agents at scale in their business.
+3:14 - It covers the current state of
+AI agents, high impact use cases
+3:17 - across marketing, sales, and
+operations with real world examples.
+3:22 - So you get more AI agents
+ideas you can build.
+3:24 - You'll also learn how to identify
+some proven low risk starting point
+3:28 - to deploy AI agents, common pitfalls,
+and even a practical checklist to
+3:33 - guide your organization through
+each stage of the implementation.
+3:37 - What I like is that it comes with a
+step-by-step execution roadmap so you
+3:41 - have a clear directions on the important
+areas to focus on at each stage.
+3:45 - I recommend you download this
+in a description below for free.
+3:48 - And thank you hotspot for
+sponsoring this video.
+3:50 - Alright.
+3:50 - Now we'll use this framework to build
+a three agent work team in this work
+3:54 - team demo we'll have a manager, and
+underneath we have a competitive research
+3:59 - agent and a data visualization agent.
+4:01 - What kind of agent doesn't really matter.
+4:03 - What's more important is you know,
+the concept behind, so you can use the
+4:08 - same method to build your AI work team.
+4:10 - ********
+Let's start with the research agent first.
+4:12 - So we will have this AI designer to
+help us to design the AI agent prompt.
+4:16 - So you can use whatever AI models
+like ChatGPT, Gemini, but make
+4:20 - sure it is a reasoning model
+for more thoughtful outputs.
+4:22 - And we will use this project
+instructions to generate a set
+4:25 - of ready to use system prompt for
+whatever agents we're going to build.
+4:29 - So I would just describe
+what I want this agent to do.
+4:31 - For example, it will use perplexity to
+do research and create a Google Doc and
+4:36 - then return the document link to me.
+4:38 - So you can see the agent prompt output
+is really detailed and it will give you
+4:41 - the proposed list of tool access as well.
+4:44 - But make sure to review and
+make adjustment and never
+4:46 - just accept what it gives you.
+4:48 - Now we are ready to create this
+agent on n8n, create a new workflow.
+4:53 - Let's just call it competitive
+research agent, then add an AI agent.
+4:57 - Now you can see clearly the
+structure of an AI agent.
+5:00 - We have model, memory and tools,
+and let's do it one by one.
+5:04 - For AI models, I'll just
+pick Claude Sonnet 4.
+5:07 - But you can pick whatever model
+that you want, but note that for
+5:10 - every model service, you must
+set up the credential first.
+5:13 - And then add the memory.
+5:14 - So memory is not mandatory, but it's
+super beneficial since it allows the
+5:19 - agent to retrieve or update knowledge
+and learning into your own database.
+5:23 - But for the sake of demo, we
+will just keep it simple and
+5:26 - use the simple memory tool.
+5:28 - So keep the default context window
+length to five, and that means
+5:32 - the agent will only retain the
+last five messages at maximum.
+5:36 - Now according to the system prompt,
+we will add three tools, the
+5:39 - perplexity search, Google Doc read
+function, and the write function.
+5:43 - First let's add the perplexity node.
+5:45 - For the sake of demo, I'll just pick the
+sonar mode it is most cost effective, but
+5:49 - you may want to use Sonar Deep research
+if you want more in-depth research.
+5:53 - As for the message, we'll
+let the AI model to decide.
+5:55 - So once done, you can test it just
+to make sure everything is connecting
+5:59 - properly with a testing query so
+you can see it's working fine.
+6:03 - And next we'll add the Google Doc
+node for reading company information.
+6:07 - Under the operations we
+will need the get function.
+6:10 - So let's say I have this company
+information about my brand Miro and I
+6:14 - want the agent to always access this
+information as part of the research.
+6:19 - So just copy this document link
+and then paste it back on n8n.
+6:23 - Again, test it quickly and you can see
+the content is retrieved successfully.
+6:27 - Now add another Google Doc.
+6:28 - Create function.
+6:29 - So keep all the same settings,
+but this time pick "Create" under
+6:33 - operation, pick the right folder name.
+6:36 - So this will be the folder that this
+research agent will save the report.
+6:40 - For the title,
+6:41 - we will leave to the
+AI model to the decide.
+6:43 - So let test it by creating a testing
+document so it will return the
+6:47 - document id, that means it's working.
+6:49 - And then also add one more Google
+doc node for the update function.
+6:53 - For the document ID and the
+actual body content, we will
+6:56 - let the AI model to decide.
+6:58 - Also, rename them to keep it organized.
+7:00 - Now the final step is to add the
+system prompt for this AI agent.
+7:04 - So whenever we trigger the
+workflow, it knows what to do.
+7:07 - So click on the AI agent, under
+option pick system message.
+7:11 - So here you can define the system prompt
+for this AI agents and then we can paste
+7:15 - back the system prompt we just generated.
+7:17 - Note I have simplified it and to keep
+the final report length, no more than
+7:21 - 800 words just to showcase the demo.
+7:24 - Now the agent is ready.
+7:25 - Let's try this prompt to ask it
+to research about Figma, including
+7:29 - the business model, key products
+and market position, and how it
+7:33 - impacts our strategy at Miro.
+7:35 - So you can see it would trigger all
+the nodes starting from perplexity,
+7:39 - and you can always click the log to
+see the details or in case any errors
+7:44 - occurred, it is super helpful to debug.
+7:46 - Then immediately the insights is ready
+with recommendations and the report
+7:50 - link where you can open, and this is
+amazing with the title and key sections.
+7:56 - And you can always adjust the
+report length, formatting, beautify
+8:00 - it using the system prompt.
+8:01 - The only complaint I have is it
+didn't went through the Miro document.
+8:05 - So this is the good chance
+for you to review the system
+8:08 - prompt and to make improvement.
+8:10 - And the best thing is the whole process
+just took me less than 15 minutes.
+8:14 - So don't think AI agents
+have to be super complicated.
+8:18 - Now we are not done yet to make
+an AI work team that should
+8:21 - be more than one AI assistant.
+8:23 - So this time we are going to build
+another data visualization agent
+8:27 - and it is easier than you think.
+8:29 - ******
+So we will first ask the AI agent
+designer to generate a set of system
+8:32 - prompt for this visualization agent.
+8:34 - For this agent.
+8:35 - It will turn any Google Doc
+report link into a visualization
+8:40 - dashboard and send an email to me.
+8:42 - And you can see the generated
+system prompt is super detailed, but
+8:45 - always make changes using your own
+judgment to see if that makes sense.
+8:49 - Now create a new workflow on n8n
+and call it visualization agent.
+8:53 - So I will keep using the Claude Sonnet 4
+model, but this time also set the maximum
+8:58 - number of tokens to at least 8,000.
+9:01 - As for visualization generation types
+of tasks, it usually requires more
+9:05 - tokens to avoid message output cutoff.
+9:07 - And then also add the memory tool.
+9:10 - For the tools according to the system
+prompt, we'll need the Google Doc
+9:13 - for retrieving the report content
+and Gmail to send the email.
+9:17 - So first, add the Google document nodes
+for reading reports and let AI to decide
+9:21 - the document ID and always test it.
+9:24 - And then also add the Gmail
+node for sending emails.
+9:27 - Pick the send function, and set
+recipient, subjects and body message
+9:31 - to be decided by the AI model.
+9:33 - And in case you're building an agent
+that needs to get email, reply email,
+9:38 - you must add them one by one again,
+test it by sending a testing email.
+9:42 - And then finally paste back the system
+instructions for these AI agents we just
+9:47 - So everything is ready now.
+9:48 - We can try to ask it to prepare
+the dashboard for this Figma
+9:51 - research report we just generated.
+9:53 - And then you can see it is
+executing the nodes from Google
+9:57 - Documents and then back to Claude
+for generating the visualization.
+10:01 - And then finally sending the email.
+10:03 - And then within a minute it says
+the email has been sent with the
+10:06 - actions it took for the visuals.
+10:07 - I also received the email and I
+like the email subject line, and the
+10:11 - email is exactly what I want with
+the typical visual style from Claude.
+10:15 - And you can always adjust the
+dashboard format, like color, style,
+10:19 - width, or adding additional message
+using the agent system prompt.
+10:23 - So with no more than 10 minutes,
+we have built this simple agent
+10:27 - to do all kinds of visualization
+and communication tasks for you.
+10:31 - You can adapt this for any
+recurring data visualization or
+10:35 - stakeholder communication needs.
+10:36 - You can even connect to your Google
+Sheets or Google Drive folder,
+10:40 - so there's so many possibilities.
+10:42 - Okay, we are ready to
+build our AI work team.
+10:45 - So we will have a manager agent about
+these two AI assistant, and it will help
+10:49 - to delegate and coordinate the work tasks.
+10:52 - So this manager is just like your ultimate
+work assistant managing your team.
+10:56 - ******
+First, let's quickly create a
+system prompt for this manager and
+10:59 - describe its major role to delegate
+the tasks, then make adjustment as
+11:04 - needed and save it for later use.
+11:06 - Now before adding the manager
+agent, we will first need to make
+11:09 - some small tweaks to the two AI
+assistant as we going to connect
+11:13 - these two assistant to the AI manager.
+11:16 - So on the research agent first remove
+the memory as the memory is going to be
+11:20 - maintained at the manager level, and also
+just to make things easier to manage.
+11:25 - And second remove the
+chat message trigger.
+11:28 - So that is because we no longer
+directly work with this assistant, but
+11:32 - to delegate it to the upper manager.
+11:34 - So we will pick the node "When
+executed by another workflow",
+11:38 - and that means this research agent
+will now receive command from the
+11:42 - manager agent we are going to create.
+11:45 - And then we'll define a field,
+just give it a name called query,
+11:48 - and the name is totally up to you.
+11:50 - And then connect it to this agent.
+11:53 - And finally click this AI Agents.
+11:55 - We'll change the prompt message
+field for this AI Agent as we no
+11:58 - longer use the chat input trigger.
+12:00 - So under the source for prompts, select
+define below, click expressions and
+12:05 - type {{$json.query}}, which is the query
+field we just defined, and then save it.
+12:10 - And then repeat the same and make the
+same changes for the visualization agent.
+12:14 - Once you are done, we are going
+to create a manager agent.
+12:17 - Again, add a new AI agent.
+12:19 - Repeat the same process to add
+the AI models and simple memory.
+12:23 - For the tools, this will be connected
+to the two AI assistant we just created.
+12:27 - So this manager will supervise these two
+assistant and route the tasks when needed.
+12:32 - So in the tool list, search
+for Call n8n Workflow Tool.
+12:36 - So these node allow us to trigger any
+existing agent workflow we have created.
+12:42 - So under the list, let's first select
+the research agent, and then you
+12:46 - will see there is a field called
+query under the workflow input.
+12:50 - So that is the field we just defined.
+12:52 - And then also rename it as
+research agents, just to make
+12:55 - things clear and organized.
+12:57 - And then also do the same for
+the visualization agent by adding
+13:00 - another trigger workflow tool.
+13:02 - Now we are almost done.
+13:03 - The last thing is to add back the
+system prompt for this manager agent.
+13:07 - So paste back the system prompt we
+just created and then click save.
+13:11 - Okay.
+13:11 - This is so exciting.
+13:12 - Let's try this prompt to ask it to
+research about the brand FigJam, and
+13:17 - at the same time to visualize the
+report insights and send it to me.
+13:21 - So you can see it would immediately
+call the research agent and then to
+13:25 - the visualization agent, it is all
+handled by this manager and after
+13:30 - around four minutes , it returned
+output for me and it looks great.
+13:34 - You can see the manager specified
+how each of the tasks are handled and
+13:38 - with the report link, which is nice,
+and it ensures everything has been
+13:42 - delivered at the end of the message.
+13:44 - and we can just click the
+link to open the report.
+13:47 - And it looks the same as if we are
+directly working with this research agent
+13:51 - and also the email with the dashboard.
+13:53 - It looks amazing with all the
+report details, the charts, the
+13:58 - visual storytelling elements.
+14:00 - And so now you already have this
+small AI work team, and the best thing
+14:04 - is using this method is much more
+scalable in case you want to add a new
+14:09 - assistant or AI workflow to this team,
+you can just add it to the manager.
+14:14 - And remember, each assistant
+should be simple, so it's much
+14:17 - more easy to manage and maintain.
+14:20 - And you can even enable the public
+chat with the authentication.
+14:23 - So you really like having a dedicated
+manager to manage your work process.
+14:28 - So don't think you need to make
+AI agents super complex to start
+14:32 - generating values for your work.
+14:34 - A simple system is always the
+most reliable and scalable.
+14:38 - If you want more inspiration,
+join my community.
+14:41 - You'll get access to all my tested
+prompt I share on my channel
+14:44 - and other featured content.
+14:46 - You can find the link in
+the description to join.
+14:48 - And before you go, I highly recommend
+you check out this video about
+14:52 - MCP and you will know why this is
+the next big thing for AI agents.
+14:57 - I'll see you next time.
