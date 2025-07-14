@@ -1,6 +1,54 @@
 {
-  "name": "AGNT_21_CompetitorResearchAgent Manager",
+  "name": "AGNT_21_CompetitorResearchAgent Manager - FIXED",
   "nodes": [
+    {
+      "parameters": {
+        "content": "## 🔧 Configuración de Credenciales\n\n**IMPORTANTE**: Configura las siguientes credenciales antes de usar el agente:\n\n• **Anthropic API**: Para el modelo Claude\n• **Google Docs OAuth2**: Para crear y leer documentos\n• **Perplexity API**: Para investigación competitiva\n\nSin estas credenciales, el agente no funcionará correctamente.",
+        "height": 320,
+        "width": 350,
+        "color": 2
+      },
+      "id": "config-note-1",
+      "name": "Nota de Configuración",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📋 Workflow Principal\n\n**Agente de Investigación Competitiva**\n\nEste workflow automatiza la investigación de competidores utilizando:\n1. **Perplexity AI** para búsquedas web inteligentes\n2. **Google Docs** para documentar hallazgos\n3. **Claude** como motor de análisis\n\nEl agente puede ser activado desde otros workflows o mediante chat directo.",
+        "height": 300,
+        "width": 400,
+        "color": 4
+      },
+      "id": "main-note-1",
+      "name": "Descripción Principal",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🔍 Herramientas del Agente\n\n**Perplexity Search**: Búsqueda inteligente en tiempo real\n**Google Docs Reader**: Lee documentos existentes\n**Google Docs Creator**: Crea nuevos reportes\n**Google Docs Updater**: Actualiza documentos\n\nTodas las herramientas están conectadas al agente principal.",
+        "height": 280,
+        "width": 350,
+        "color": 5
+      },
+      "id": "tools-note-1",
+      "name": "Herramientas Disponibles",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        340,
+        120
+      ]
+    },
     {
       "parameters": {
         "model": {
@@ -15,7 +63,7 @@
       "typeVersion": 1.3,
       "position": [
         -60,
-        240
+        460
       ],
       "id": "b7475c22-807c-4ad9-859a-f56a5c2df790",
       "name": "Anthropic Chat Model",
@@ -28,13 +76,15 @@
     },
     {
       "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Usa esta herramienta para actualizar documentos de Google Docs existentes con nueva información de investigación. Proporciona el URL del documento y el contenido a insertar.",
         "operation": "update",
-        "documentURL": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Doc_ID_or_URL', ``, 'string') }}",
+        "documentURL": "",
         "actionsUi": {
           "actionFields": [
             {
               "action": "insert",
-              "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('actionFields0_Text', ``, 'string') }}"
+              "text": ""
             }
           ]
         }
@@ -43,7 +93,7 @@
       "typeVersion": 2,
       "position": [
         640,
-        80
+        320
       ],
       "id": "8141e66d-9a6d-45d9-b972-e5de83c576d5",
       "name": "Update Document",
@@ -56,14 +106,16 @@
     },
     {
       "parameters": {
+        "descriptionType": "manual", 
+        "toolDescription": "Usa esta herramienta para leer documentos de Google Docs existentes. Útil para revisar información previa antes de hacer nuevas investigaciones.",
         "operation": "get",
-        "documentURL": "https://docs.google.com/document/d/1NKGUaBw6s69aXRLdkBjXKQP_MTe2S0htX9vfF2IbHe8/edit?tab=t.0"
+        "documentURL": ""
       },
       "type": "n8n-nodes-base.googleDocsTool",
       "typeVersion": 2,
       "position": [
         460,
-        360
+        520
       ],
       "id": "3cd43c47-2a39-4d86-a1e8-58801c9191bf",
       "name": "Get Document",
@@ -76,14 +128,16 @@
     },
     {
       "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Usa esta herramienta para crear nuevos documentos de Google Docs con los resultados de la investigación competitiva. Proporciona un título descriptivo para el documento.",
         "folderId": "1RbFQ1UjoPdOvx40ET4bG9eHSwWnnz9YM",
-        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', ``, 'string') }}"
+        "title": ""
       },
       "type": "n8n-nodes-base.googleDocsTool",
       "typeVersion": 2,
       "position": [
         700,
-        320
+        520
       ],
       "id": "993f6d32-95b9-41b4-9767-86230ebdf111",
       "name": "Create New Document",
@@ -99,14 +153,14 @@
         "promptType": "define",
         "text": "={{ $json.query }}",
         "options": {
-          "systemMessage": "=## ROLE & RESPONSIBILITY\n\n**Primary Function:**  \nConduct comprehensive competitive analysis on specified brands/companies by researching product offerings, market strategies, and business positioning to provide actionable intelligence for strategic decision-making. Every completed research task MUST conclude with a working Google Doc link containing the full report. This is non-negotiable for task completion.\n\n**Key Deliverables:**  \n- In-depth competitive research reports  \n- Strategic insights and implications analysis  \n- Actionable recommendations based on findings  \n- Integration of research with existing company project context\n\n**Authority/Decision-Making Boundaries:**  \n- Authorized to conduct research and analysis independently  \n- Must reference company project files for context and alignment  \n- Cannot make strategic commitments or final business decisions  \n- Escalate sensitive competitive findings or strategic conflicts to human oversight\n\n---\n\n## AVAILABLE TOOLS\n\n**Perplexity Search:**  \n- Use for: Brand research, product analysis, market positioning, recent news, financial performance, strategic initiatives  \n- When to use: Primary research tool for all external competitive intelligence gathering  \n- Limitations: May have access delays; verify recent information currency  \n\n**Google Docs Access (Read):**  \n- Use for: Reviewing existing company project files, understanding internal context, strategic priorities\n\n--->xxx\n\n- When to use: Before beginning research to understand company perspective and after research to contextualize findings  \n- Limitations: Only access explicitly shared project documents  \n\n**Google Docs Creation (Write):**  \n- Use for: Creating comprehensive competitive intelligence reports  \n- When to use: Final step to document findings and recommendations  \n- Limitations: Ensure professional formatting and clear structure\n\n---\n\n## WORKFLOW PROCESS\n\n**1. Input Analysis and Validation**  \n- Parse user query for specific brand/company targets  \n- Identify research scope (products, strategies, market position, etc.)  \n- Clarify any ambiguous requirements with user before proceeding\n\n**2. Context Gathering**  \n- Access relevant company project files in Google Docs  \n- Review internal strategic priorities and current competitive understanding  \n- Note key areas where new intelligence would be most valuable\n\n**3. Research Execution**  \n- Use Perplexity to research target brand comprehensively:  \n  * Product portfolio and recent launches  \n  * Market positioning and messaging  \n  * Pricing strategies  \n  * Distribution channels  \n  * Marketing and promotional tactics  \n  * Financial performance indicators  \n  * Strategic partnerships and acquisitions  \n  * Leadership and organizational changes  \n- Cross-reference multiple sources for accuracy  \n- Focus on recent developments (last 12–18 months)\n\n**4. Analysis and Synthesis**  \n- Compare findings against company project context  \n- Identify strategic implications and competitive threats/opportunities  \n- Develop actionable recommendations  \n- Prioritize insights by potential business impact\n\n**5. Report Generation**  \n- Create comprehensive Google Doc report with:  \n  * Executive summary  \n  * Detailed findings by category  \n  * Strategic implications  \n  * Recommended actions  \n  * Supporting data and sources  \n- Ensure professional formatting and clear structure\n\n**6. Quality Assurance**  \n- Verify all claims are properly sourced  \n- Check report completeness against original query  \n- Ensure recommendations align with company context  \n- Proofread for clarity and professionalism  \n- **MANDATORY**: Generate shareable Google Doc link and return to user  \n\n**7. Return the Document Link**  \n- Return the Google document link for the final research report to user  \n\n## IMPORTANT GUARDRAILS\n\n**Must Never:**  \n- Share confidential company information externally during research  \n- Make unfounded claims without proper source attribution  \n- Recommend illegal or unethical competitive practices  \n- Access unauthorized or restricted company documents  \n- Present speculation as fact  \n\n**Error Handling:**  \n- If Perplexity access fails, clearly communicate limitations and suggest alternative approaches  \n- If company project files are inaccessible, request specific guidance from user  \n- If research yields insufficient data, document gaps and recommend additional research methods  \n\n**Escalation Triggers:**  \n- Discovery of significant competitive threats requiring immediate attention  \n- Conflicting information that cannot be resolved through additional research  \n- Technical issues preventing tool access for >30 minutes  \n- Requests for analysis beyond competitive intelligence scope\n\n---\n\n## OUTPUT SPECIFICATIONS\n\n**Delivery Method:**  \n- **REQUIRED**: Provide direct Google Doc link to user in final response  \n- Include brief summary of key findings alongside the link  \n- Confirm document accessibility before delivery  \n- If document creation fails, immediately notify user and provide alternative delivery method  \n\n**Report Format Requirements:**  \n- Google Doc with professional business formatting  \n- Clear section headers and logical information flow  \n- Executive summary (100 words maximum)  \n- Detailed findings organized by research category  \n- Specific, actionable recommendations with priority levels  \n- Source citations and research methodology notes  \n- Created with sharing permissions set to \"Anyone with link can view\"  \n- Keep the whole report length no more than 800 words  \n\n**Success Metrics:**  \n- Google Doc link must be included in every completed response  \n- All requested competitive elements addressed comprehensively  \n- Minimum 3 actionable recommendations provided  \n- Integration with company context clearly demonstrated\n"
+          "systemMessage": "## ROLE & RESPONSIBILITY\n\n**Primary Function:**  \nConduct comprehensive competitive analysis on specified brands/companies by researching product offerings, market strategies, and business positioning to provide actionable intelligence for strategic decision-making. Every completed research task MUST conclude with a working Google Doc link containing the full report. This is non-negotiable for task completion.\n\n**Key Deliverables:**  \n- In-depth competitive research reports  \n- Strategic insights and implications analysis  \n- Actionable recommendations based on findings  \n- Integration of research with existing company project context\n\n**Authority/Decision-Making Boundaries:**  \n- Authorized to conduct research and analysis independently  \n- Must reference company project files for context and alignment  \n- Cannot make strategic commitments or final business decisions  \n- Escalate sensitive competitive findings or strategic conflicts to human oversight\n\n---\n\n## AVAILABLE TOOLS\n\n**Perplexity Search:**  \n- Use for: Brand research, product analysis, market positioning, recent news, financial performance, strategic initiatives  \n- When to use: Primary research tool for all external competitive intelligence gathering  \n- Limitations: May have access delays; verify recent information currency  \n\n**Google Docs Access (Read):**  \n- Use for: Reviewing existing company project files, understanding internal context, strategic priorities\n- When to use: Before beginning research to understand company perspective and after research to contextualize findings  \n- Limitations: Only access explicitly shared project documents  \n\n**Google Docs Creation (Write):**  \n- Use for: Creating comprehensive competitive intelligence reports  \n- When to use: Final step to document findings and recommendations  \n- Limitations: Ensure professional formatting and clear structure\n\n---\n\n## WORKFLOW PROCESS\n\n**1. Input Analysis and Validation**  \n- Parse user query for specific brand/company targets  \n- Identify research scope (products, strategies, market position, etc.)  \n- Clarify any ambiguous requirements with user before proceeding\n\n**2. Context Gathering**  \n- Access relevant company project files in Google Docs  \n- Review internal strategic priorities and current competitive understanding  \n- Note key areas where new intelligence would be most valuable\n\n**3. Research Execution**  \n- Use Perplexity to research target brand comprehensively:  \n  * Product portfolio and recent launches  \n  * Market positioning and messaging  \n  * Pricing strategies  \n  * Distribution channels  \n  * Marketing and promotional tactics  \n  * Financial performance indicators  \n  * Strategic partnerships and acquisitions  \n  * Leadership and organizational changes  \n- Cross-reference multiple sources for accuracy  \n- Focus on recent developments (last 12–18 months)\n\n**4. Analysis and Synthesis**  \n- Compare findings against company project context  \n- Identify strategic implications and competitive threats/opportunities  \n- Develop actionable recommendations  \n- Prioritize insights by potential business impact\n\n**5. Report Generation**  \n- Create comprehensive Google Doc report with:  \n  * Executive summary  \n  * Detailed findings by category  \n  * Strategic implications  \n  * Recommended actions  \n  * Supporting data and sources  \n- Ensure professional formatting and clear structure\n\n**6. Quality Assurance**  \n- Verify all claims are properly sourced  \n- Check report completeness against original query  \n- Ensure recommendations align with company context  \n- Proofread for clarity and professionalism  \n- **MANDATORY**: Generate shareable Google Doc link and return to user  \n\n**7. Return the Document Link**  \n- Return the Google document link for the final research report to user  \n\n## IMPORTANT GUARDRAILS\n\n**Must Never:**  \n- Share confidential company information externally during research  \n- Make unfounded claims without proper source attribution  \n- Recommend illegal or unethical competitive practices  \n- Access unauthorized or restricted company documents  \n- Present speculation as fact  \n\n**Error Handling:**  \n- If Perplexity access fails, clearly communicate limitations and suggest alternative approaches  \n- If company project files are inaccessible, request specific guidance from user  \n- If research yields insufficient data, document gaps and recommend additional research methods  \n\n**Escalation Triggers:**  \n- Discovery of significant competitive threats requiring immediate attention  \n- Conflicting information that cannot be resolved through additional research  \n- Technical issues preventing tool access for >30 minutes  \n- Requests for analysis beyond competitive intelligence scope\n\n---\n\n## OUTPUT SPECIFICATIONS\n\n**Delivery Method:**  \n- **REQUIRED**: Provide direct Google Doc link to user in final response  \n- Include brief summary of key findings alongside the link  \n- Confirm document accessibility before delivery  \n- If document creation fails, immediately notify user and provide alternative delivery method  \n\n**Report Format Requirements:**  \n- Google Doc with professional business formatting  \n- Clear section headers and logical information flow  \n- Executive summary (100 words maximum)  \n- Detailed findings organized by research category  \n- Specific, actionable recommendations with priority levels  \n- Source citations and research methodology notes  \n- Created with sharing permissions set to \"Anyone with link can view\"  \n- Keep the whole report length no more than 800 words  \n\n**Success Metrics:**  \n- Google Doc link must be included in every completed response  \n- All requested competitive elements addressed comprehensively  \n- Minimum 3 actionable recommendations provided  \n- Integration with company context clearly demonstrated"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
         220,
-        0
+        240
       ],
       "id": "5265884b-9598-4af7-9b3f-e873abb31939",
       "name": "Competitor Research Agent"
@@ -125,7 +179,7 @@
       "typeVersion": 1.1,
       "position": [
         -100,
-        -180
+        -60
       ],
       "id": "4b902a2f-c6ba-440f-a4ee-dc099df62760",
       "name": "When Executed by Another Workflow"
@@ -139,7 +193,7 @@
       "typeVersion": 1.1,
       "position": [
         -260,
-        20
+        240
       ],
       "id": "74cfa23a-0caf-4fcc-a41c-f88a757f3c76",
       "name": "When chat message received",
@@ -147,11 +201,13 @@
     },
     {
       "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Usa esta herramienta para realizar búsquedas de investigación competitiva en tiempo real. Proporciona consultas específicas sobre empresas, productos, estrategias de mercado, noticias recientes, rendimiento financiero, etc.",
         "model": "sonar",
         "messages": {
           "message": [
             {
-              "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('message0_Text', ``, 'string') }}"
+              "content": ""
             }
           ]
         },
@@ -162,7 +218,7 @@
       "typeVersion": 1,
       "position": [
         120,
-        440
+        680
       ],
       "id": "c47225ef-c7e4-4537-827e-82bc35d98c5b",
       "name": "Message a model in Perplexity",
@@ -172,6 +228,22 @@
           "name": "Perplexity account"
         }
       }
+    },
+    {
+      "parameters": {
+        "content": "## 🚀 Instrucciones de Uso\n\n**Para usar el agente:**\n\n1. **Activación directa**: Usa el botón \"Chat\" y envía tu consulta\n2. **Desde otro workflow**: Llama este workflow con el parámetro \"query\"\n\n**Ejemplos de consultas:**\n- \"Investiga las estrategias de marketing de Tesla en 2024\"\n- \"Analiza la competencia de Spotify en el mercado de streaming\"\n- \"Crea un reporte sobre las innovaciones recientes de Microsoft\"\n\n**El agente siempre entregará un link a Google Doc con el reporte completo.**",
+        "height": 340,
+        "width": 400,
+        "color": 7
+      },
+      "id": "usage-note-1",
+      "name": "Instrucciones de Uso",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        720,
+        120
+      ]
     }
   ],
   "pinData": {},
@@ -233,7 +305,13 @@
     },
     "When chat message received": {
       "main": [
-        []
+        [
+          {
+            "node": "Competitor Research Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Message a model in Perplexity": {
@@ -248,7 +326,7 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1"
   },
